@@ -57,6 +57,7 @@ class Interest(object):
             self._selectedDelegationIndex = value._selectedDelegationIndex
             self._defaultWireEncoding = value.getDefaultWireEncoding()
             self._defaultWireEncodingFormat = value._defaultWireEncodingFormat
+            self._content = value._content
         else:
             self._name = ChangeCounter(Name(value) if type(value) is Name
                                                    else Name())
@@ -76,11 +77,32 @@ class Interest(object):
             self._selectedDelegationIndex = None
             self._defaultWireEncoding = SignedBlob()
             self._defaultWireEncodingFormat = None
+            self._content = Blob()
 
         self._getNonceChangeCount = 0
         self._getDefaultWireEncodingChangeCount = 0
         self._changeCount = 0
         self._lpPacket = None
+
+    def setContent(self, content):
+        """
+        Set the content to the given value.
+
+        :param content: The array with the content bytes. If content is not a
+          Blob, then create a new Blob to copy the bytes (otherwise
+          take another pointer to the same Blob).
+        :type content: A Blob or an array type with int elements
+        """
+        self._content = content if isinstance(content, Blob) else Blob(content)
+
+    def getContent(self):
+        """
+        Get the data packet's content.
+
+        :return: The content as a Blob, which isNull() if unspecified.
+        :rtype: Blob
+        """
+        return self._content
 
     def getName(self):
         """
@@ -778,5 +800,5 @@ class Interest(object):
     mustBeFresh = property(getMustBeFresh, setMustBeFresh)
     nonce = property(getNonce, setNonce)
     interestLifetimeMilliseconds = property(getInterestLifetimeMilliseconds, setInterestLifetimeMilliseconds)
-
+    content = property(getContent, setContent)
 
