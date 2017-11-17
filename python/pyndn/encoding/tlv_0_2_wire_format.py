@@ -145,8 +145,8 @@ class Tlv0_2WireFormat(WireFormat):
           Tlv.InterestLifetime, interest.getInterestLifetimeMilliseconds())
         
         #if data is present
-        if data.getContent().size() != 0:
-            encoder.writeBlobTlv(Tlv.Content, data.getContent().buf())
+        if interest.getContent().size() != 0:
+            encoder.writeBlobTlv(Tlv.Content, interest.getContent().buf())
 
         # Encode the Nonce as 4 bytes.
         if interest.getNonce().size() == 0:
