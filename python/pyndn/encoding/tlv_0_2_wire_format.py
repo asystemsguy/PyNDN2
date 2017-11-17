@@ -143,6 +143,10 @@ class Tlv0_2WireFormat(WireFormat):
 
         encoder.writeOptionalNonNegativeIntegerTlvFromFloat(
           Tlv.InterestLifetime, interest.getInterestLifetimeMilliseconds())
+        
+        #if data is present
+        if data.getContent().size() != 0:
+            encoder.writeBlobTlv(Tlv.Content, data.getContent().buf())
 
         # Encode the Nonce as 4 bytes.
         if interest.getNonce().size() == 0:
@@ -218,6 +222,9 @@ class Tlv0_2WireFormat(WireFormat):
             self._decodeSelectors(interest, decoder, copy)
         # Require a Nonce, but don't force it to be 4 bytes.
         nonce = Blob(decoder.readBlobTlv(Tlv.Nonce), copy)
+        
+        interest.setContent(Blob(decoder.readOptionalBlobTlv(Tlv.Content,endOffset),copy)
+
         interest.setInterestLifetimeMilliseconds(
            decoder.readOptionalNonNegativeIntegerTlvAsFloat
            (Tlv.InterestLifetime, endOffset))
