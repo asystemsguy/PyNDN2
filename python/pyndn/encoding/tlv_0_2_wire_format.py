@@ -223,7 +223,7 @@ class Tlv0_2WireFormat(WireFormat):
         # Require a Nonce, but don't force it to be 4 bytes.
         nonce = Blob(decoder.readBlobTlv(Tlv.Nonce), copy)
         
-        interest.setContent(Blob(decoder.readOptionalBlobTlv(Tlv.Content,endOffset),copy)
+        interest.setContent(Blob(decoder.readOptionalBlobTlv(Tlv.Content,endOffset),copy))
 
         interest.setInterestLifetimeMilliseconds(
            decoder.readOptionalNonNegativeIntegerTlvAsFloat
