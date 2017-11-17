@@ -144,6 +144,7 @@ class Tlv0_2WireFormat(WireFormat):
         encoder.writeOptionalNonNegativeIntegerTlvFromFloat(
           Tlv.InterestLifetime, interest.getInterestLifetimeMilliseconds())
         
+        print interest.getContent().size()
         #if data is present
         if interest.getContent().size() != 0:
             encoder.writeBlobTlv(Tlv.Content, interest.getContent().buf())
